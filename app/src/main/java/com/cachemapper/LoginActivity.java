@@ -3,6 +3,7 @@ package com.cachemapper;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -40,21 +41,12 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity{
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
     private boolean processingPassword = false;
     public static final String PREFS_NAME = "CacheMapperPrefsFile";
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mLoginFormView;
     private Button mEmailSignInButton;
 
     @Override
@@ -83,33 +75,7 @@ public class LoginActivity extends AppCompatActivity{
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.login_form);
     }
-
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
 
 
     /**
@@ -156,6 +122,7 @@ public class LoginActivity extends AppCompatActivity{
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
+            processingPassword=false;
         } else {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -169,6 +136,8 @@ public class LoginActivity extends AppCompatActivity{
                         editor.putString("currentUser", email);
                         editor.commit();
                         processingPassword=false;
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivityForResult(intent, 0);
                         return;
                     }
                     else
@@ -185,6 +154,8 @@ public class LoginActivity extends AppCompatActivity{
             editor.putString("currentUser", email);
             editor.commit();
             processingPassword=false;
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivityForResult(intent, 0);
             //go to next activity
         }
     }
@@ -195,6 +166,15 @@ public class LoginActivity extends AppCompatActivity{
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            //coming back from logout
+            mPasswordView.setText("");
+        }
     }
 
 
