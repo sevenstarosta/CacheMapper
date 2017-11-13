@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "549924941908",
+    "firebase_url": "https://final-project-final-yanma.firebaseio.com",
+    "project_id": "final-project-final-yanma",
+    "storage_bucket": "final-project-final-yanma.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549924941908:android:4e4f9b66944e54a8",
+        "android_client_info": {
+          "package_name": "com.cachemapper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549924941908-bpe7qb5fe6j7ha4vauhgp11u03latg7a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cachemapper",
+            "certificate_hash": "48cd3bae2e131a43f5acbfdf33964e5d6d83e7f1"
+          }
+        },
+        {
+          "client_id": "549924941908-86l91djoigbb1unsediuq25j1fv66p0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQhg_tX3RGbolKSoVmYqzeI_8021cWMhM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549924941908-86l91djoigbb1unsediuq25j1fv66p0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

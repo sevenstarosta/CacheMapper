@@ -27,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
+    public void addCache(View view)
+    {
+        Intent addIntent = new Intent(this, addcache.class);
+        startActivityForResult(addIntent,1);
+    }
 }
