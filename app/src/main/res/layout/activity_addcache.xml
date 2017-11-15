@@ -41,7 +41,7 @@
             android:inputType="textPersonName"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:text="Name" />
+            android:hint="Name for your cache" />
 
         <EditText
             android:id="@+id/descEditText"
@@ -51,7 +51,7 @@
             android:layout_below="@+id/nameEditText"
             android:layout_centerHorizontal="true"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Description" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -71,7 +71,7 @@
             android:onClick="takePicture"/>
 
         <Button
-            android:text="Add the cache"
+            android:text="Upload Cache at Current Location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/takePictureButton"

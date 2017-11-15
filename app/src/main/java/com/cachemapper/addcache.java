@@ -45,14 +45,15 @@ public class addcache extends AppCompatActivity {
 
     Uri file;
 
-    ImageView imageView;
-    Button takePictureButton;
+    private ImageView imageView;
+    private Button takePictureButton;
 
     private DatabaseReference mDatabase;
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    public Button backButton;
+    private Button backButton;
+    private Button addButton;
     private EditText nameEditText;
     private EditText descEditText;
 
@@ -101,7 +102,18 @@ public class addcache extends AppCompatActivity {
             }
         });
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        addButton = (Button) findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            uploadFirebaseData(view);
+            }
+        });
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            takePictureButton.setEnabled(false);
+            ActivityCompat.requestPermissions(this, new String[] { android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE }, TAKE_PHOTO_PERMISSION);
+        }
     }
 
     @Override
