@@ -38,6 +38,7 @@
             android:onClick="addCache"
             android:text="Add a new cache at your location"
             app:layout_anchor="@+id/include" />
+
     </LinearLayout>
 
 
