@@ -6,11 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.cachemapper.MainActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addButton"
+            tools:context="com.cachemapper.MainActivity" />
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Add a cache at my current location"
+            android:onClick="addCache"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-
 
         <Button
             android:id="@+id/logoutbutton"
@@ -23,23 +47,6 @@
 
     <include layout="@layout/content_main"
         android:id="@+id/include" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:gravity="bottom">
-
-        <Button
-            android:id="@+id/addButton"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.59"
-            android:onClick="addCache"
-            android:text="Add a new cache at your location"
-            app:layout_anchor="@+id/include" />
-
-    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

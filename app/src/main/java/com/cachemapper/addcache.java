@@ -49,6 +49,7 @@ public class addcache extends AppCompatActivity {
     private Button takePictureButton;
 
     private DatabaseReference mDatabase;
+
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -57,8 +58,8 @@ public class addcache extends AppCompatActivity {
     private EditText nameEditText;
     private EditText descEditText;
 
-    Double currentLat;
-    Double currentLon;
+    private Double currentLat;
+    private Double currentLon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
