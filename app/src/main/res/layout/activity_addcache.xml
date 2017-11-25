@@ -27,67 +27,68 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_horizontal_margin">
 
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"
-            android:hint="Name for your cache" />
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:hint="Name for your cache"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/descEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:layout_below="@+id/nameEditText"
             android:layout_centerHorizontal="true"
-            android:inputType="textPersonName"
-            android:hint="Description" />
+            android:ems="10"
+            android:hint="Description"
+            android:inputType="textPersonName" />
 
         <ImageView
             android:id="@+id/imageView"
-            android:scaleType="fitXY"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:cropToPadding="true"
             android:layout_below="@+id/descEditText"
+            android:saveEnabled="true"
             android:layout_centerHorizontal="true"
+            android:cropToPadding="true"
+            android:scaleType="fitXY"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <Button
-            android:text="Take Picture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:id="@+id/takePictureButton"
-            android:layout_above="@+id/imageLibraryButton"
-            android:onClick="takePicture"/>
-
-        <Button
-            android:text="Image Library"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/addButton"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageLibraryButton"
-            android:onClick="getImageFromLibrary"/>
+            android:layout_alignLeft="@+id/addButton"
+            android:onClick="takePicture"
+            android:text="   Take Picture   " />
 
         <Button
-            android:text="Upload Cache at Current Location"
+            android:id="@+id/imageLibraryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/addButton"
+            android:onClick="getImageFromLibrary"
+            android:layout_alignRight="@+id/addButton"
+            android:text="  Image Library  " />
+
+        <Button
+            android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/addButton"
-            android:onClick="takePicture"/>
+            android:onClick="takePicture"
+            android:text="Upload Cache at Current Location" />
     </RelativeLayout>
 
 

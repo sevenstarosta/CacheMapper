@@ -22,9 +22,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/backbutton"
+            android:layout_below="@+id/cacheUsername"
             android:ems="10"
             android:text="Name" />
+
+        <TextView
+            android:id="@+id/cacheUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/backbutton"
+            android:ems="10"
+            android:text="username" />
+
+        <TextView
+            android:id="@+id/cacheDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/cacheName"
+            android:ems="10"
+            android:text="description" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cacheDescription"
+            android:saveEnabled="true"
+            android:layout_centerHorizontal="true"
+            android:cropToPadding="true"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
