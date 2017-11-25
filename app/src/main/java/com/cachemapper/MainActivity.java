@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private Marker currentLocationMarker;
-
     private Button logoutButton;
 
     private static final int TAKE_PHOTO_PERMISSION = 1;
@@ -92,6 +91,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        //begin requesting location again!
+        if (googleApiClient != null) {
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            {
+                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,this);
+            }
+        }
+    }
+
+
 
     public void addCache(View view) {
         Intent addIntent = new Intent(this, addcache.class);
@@ -117,6 +131,20 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         googleMap.setMyLocationEnabled(true);
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (marker.equals(currentLocationMarker))
+                {
+                    return false;
+                }
+                Intent viewIntent = new Intent(MainActivity.this,ViewCache.class);
+                viewIntent.putExtra("name",marker.getTitle());
+                startActivityForResult(viewIntent,0);
+                return true;
+            }
+        });
 
         FirebaseDatabase.getInstance().getReference().child("caches")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -149,11 +177,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i)
-    {}
+    {
+
+    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult)
-    {}
+    {
+
+    }
 
     @Override
     public void onLocationChanged(Location location)
