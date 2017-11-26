@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private boolean hasCompletedMap;
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
     private LocationRequest locationRequest;
@@ -56,14 +56,13 @@ public class MainActivity extends AppCompatActivity
     private Location lastLocation;
     private Marker currentLocationMarker;
     private Button logoutButton;
-    private ChildEventListener myListener;
+    private ValueEventListener myListener;
     private HashMap<String,Marker> markers;
     private static final int TAKE_PHOTO_PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hasCompletedMap = false;
         setContentView(R.layout.activity_main);
         logoutButton = (Button) findViewById(R.id.logoutbutton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -97,14 +96,31 @@ public class MainActivity extends AppCompatActivity
     public void onPause() {
         super.onPause();
 
-        if (myListener != null) {
-            FirebaseDatabase.getInstance().getReference().child("caches").removeEventListener(myListener);
-        }
         //stopping location updates
         if (googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
     }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        if (myListener != null) {
+            FirebaseDatabase.getInstance().getReference().child("caches").removeEventListener(myListener);
+        }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        if (myListener != null)
+        {
+            FirebaseDatabase.getInstance().getReference().child("caches").addValueEventListener(myListener);
+        }
+    }
+
 
     @Override
     public void onResume()
@@ -117,10 +133,6 @@ public class MainActivity extends AppCompatActivity
             {
                 LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,this);
             }
-        }
-        if (myListener != null)
-        {
-            FirebaseDatabase.getInstance().getReference().child("caches").addChildEventListener(myListener);
         }
     }
 
@@ -170,11 +182,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        FirebaseDatabase.getInstance().getReference().child("caches")
+        /*FirebaseDatabase.getInstance().getReference().child("caches")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
                     {
+                        Log.v("main","inside valueeventlistener1");
                         for (DataSnapshot snapshot : dataSnapshot.getChildren())
                         {
                             cacheLocation cache = snapshot.getValue(cacheLocation.class);
@@ -188,9 +201,31 @@ public class MainActivity extends AppCompatActivity
                     {
 
                     }
-                });
+                });*/
 
-        myListener = FirebaseDatabase.getInstance().getReference().child("caches")
+        /*myListener = FirebaseDatabase.getInstance().getReference().child("caches")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        Log.v("main","inside valueeventlistener2");
+                        //googleMap.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                        {
+                            cacheLocation cache = snapshot.getValue(cacheLocation.class);
+                            LatLng loc = new LatLng(cache.latitude,cache.longitude);
+                            Marker marker = googleMap.addMarker(new MarkerOptions().position(loc).title(cache.name));
+                            markers.put(cache.name,marker);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });*/
+
+        FirebaseDatabase.getInstance().getReference().child("caches")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s)
@@ -202,19 +237,13 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s)
-                    {
-                        cacheLocation cache = dataSnapshot.getValue(cacheLocation.class);
-                        LatLng loc = new LatLng(cache.latitude,cache.longitude);
-                        markers.get(cache.name).setPosition(loc);
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
                     }
 
                     @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot)
-                    {
-                        cacheLocation cache = dataSnapshot.getValue(cacheLocation.class);
-                        markers.get(cache.name).remove();
-                        markers.remove(cache.name);
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
                     }
 
                     @Override
@@ -227,7 +256,6 @@ public class MainActivity extends AppCompatActivity
 
                     }
                 });
-        hasCompletedMap = true;
     }
 
     @Override

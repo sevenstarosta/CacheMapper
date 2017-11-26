@@ -1,6 +1,7 @@
 package com.cachemapper;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
@@ -201,17 +203,39 @@ public class addcache extends AppCompatActivity {
     public void uploadFirebaseData(View view)
     {
         //Check validity of data first!
+
+
+
         storageReference = FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("caches");
+
+        //checking to see if there is already a cache with this name
         String name= nameEditText.getText().toString();
+        if (mDatabase.child(name).child(name).equals(name))
+        {
+            //print warning!
+            AlertDialog alertDialog = new AlertDialog.Builder(addcache.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("A cache with this name already exists! Please choose another name.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            nameEditText.requestFocus();
+                        }
+                    });
+            alertDialog.show();
+            return;
+        }
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        ;
         String description= descEditText.getText().toString();
         double latitude = currentLat.doubleValue();
         double longitude = currentLon.doubleValue();
         String username = settings.getString("currentUser",null);
         cacheLocation cache = new cacheLocation(username,name,description,latitude,longitude);
         //currently overwrites...
-        mDatabase.child("caches").child(name).setValue(cache);
+        mDatabase.child(name).setValue(cache);
 
         //now upload image if there is one!
         imageView.setDrawingCacheEnabled(true);
@@ -238,6 +262,19 @@ public class addcache extends AppCompatActivity {
                 //display something!
             }
         });
+
+        //now displaying alert to show success
+        AlertDialog alertDialog = new AlertDialog.Builder(addcache.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Your cache has been successfully added!");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        alertDialog.show();
 
     }
 
