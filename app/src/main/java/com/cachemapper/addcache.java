@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,13 +16,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -68,7 +67,7 @@ public class addcache extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    private Button backButton;
+    private Toolbar toolbar;
     private Button addButton;
     private EditText nameEditText;
     private EditText descEditText;
@@ -85,6 +84,7 @@ public class addcache extends AppCompatActivity {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         takePictureButton = (Button) findViewById(R.id.takePictureButton);
         imageView = (ImageView) findViewById(R.id.imageView);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
@@ -106,10 +106,20 @@ public class addcache extends AppCompatActivity {
             public void onProviderDisabled(String provider) {}
         };
 
+        if (savedInstanceState != null)
+        {
+            //restore the image!
+            Bitmap bitmap = savedInstanceState.getParcelable("imageview");
+            imageView.setImageBitmap(bitmap);
+        }
+
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
-        backButton = (Button) findViewById(R.id.backbutton);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Create a Cache");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent retIntent = new Intent(addcache.this,MainActivity.class);
@@ -200,17 +210,48 @@ public class addcache extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent retIntent = new Intent(addcache.this,MainActivity.class);
+        setResult(1,retIntent);
+        finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle out) {
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        out.putParcelable("imageview", bitmap);
+        super.onSaveInstanceState(out);
+    }
+
     public void uploadFirebaseData(View view)
     {
         //Check validity of data first!
-
-
 
         storageReference = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("caches");
 
         //checking to see if there is already a cache with this name
         String name= nameEditText.getText().toString();
+        if (name.contains(".jpg") || name.contains(".png") || name.contains(".gif") || name.contains(".jpeg"))
+        {
+            //print warning!
+            AlertDialog alertDialog = new AlertDialog.Builder(addcache.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("You cannot use image file extensions in your cache name! Please choose another name.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            nameEditText.requestFocus();
+                        }
+                    });
+            alertDialog.show();
+            return;
+        }
+
         if (mDatabase.child(name).child(name).equals(name))
         {
             //print warning!
@@ -228,7 +269,6 @@ public class addcache extends AppCompatActivity {
             return;
         }
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        ;
         String description= descEditText.getText().toString();
         double latitude = currentLat.doubleValue();
         double longitude = currentLon.doubleValue();
@@ -265,8 +305,8 @@ public class addcache extends AppCompatActivity {
 
         //now displaying alert to show success
         AlertDialog alertDialog = new AlertDialog.Builder(addcache.this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("Your cache has been successfully added!");
+        alertDialog.setTitle("Success!");
+        alertDialog.setMessage("Your cache has been successfully added! Tap OK to return to the map screen.");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

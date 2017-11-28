@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,12 +52,13 @@ public class MainActivity extends AppCompatActivity
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
     private LocationRequest locationRequest;
+    private Toolbar toolbar;
     private DatabaseReference mDatabase;
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private Marker currentLocationMarker;
-    private Button logoutButton;
-    private ValueEventListener myListener;
+    //private Button logoutButton;
+    private ChildEventListener myListener;
     private HashMap<String,Marker> markers;
     private static final int TAKE_PHOTO_PERMISSION = 1;
 
@@ -64,8 +66,23 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        logoutButton = (Button) findViewById(R.id.logoutbutton);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        /*logoutButton = (Button) findViewById(R.id.logoutbutton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent retIntent = new Intent(MainActivity.this, LoginActivity.class);
+                setResult(1, retIntent);
+                finish();
+            }
+        });*/
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Cache Mapper: the app!");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent retIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -117,7 +134,7 @@ public class MainActivity extends AppCompatActivity
         super.onRestart();
         if (myListener != null)
         {
-            FirebaseDatabase.getInstance().getReference().child("caches").addValueEventListener(myListener);
+            FirebaseDatabase.getInstance().getReference().child("caches").addChildEventListener(myListener);
         }
     }
 
@@ -225,7 +242,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });*/
 
-        FirebaseDatabase.getInstance().getReference().child("caches")
+        myListener = FirebaseDatabase.getInstance().getReference().child("caches")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s)

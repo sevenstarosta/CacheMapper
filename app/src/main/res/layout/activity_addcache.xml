@@ -6,51 +6,52 @@
     android:layout_height="match_parent"
     tools:context="com.cachemapper.addcache">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/AppBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <Button
-            android:id="@+id/backbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Back" />
-
-    </android.support.design.widget.AppBarLayout>
-
     <include layout="@layout/content_addcache"
         android:id="@+id/include2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_horizontal_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_horizontal_margin">
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:title="Create a Cache"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:background="?attr/colorPrimary">
+
+        </android.support.v7.widget.Toolbar>
 
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_below="@+id/toolbar"
+            android:paddingTop="16dp"
             android:ems="10"
             android:hint="Name for your cache"
+            android:maxLines="1"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/descEditText"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nameEditText"
             android:layout_centerHorizontal="true"
             android:ems="10"
-            android:hint="Description"
-            android:inputType="textPersonName" />
+            android:hint="Give a description (and perhaps a hint) for your cache"
+            android:gravity="top|left"
+            android:maxLines="6"
+            android:minLines="2"
+            android:inputType="textMultiLine" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -60,7 +61,7 @@
             android:saveEnabled="true"
             android:layout_centerHorizontal="true"
             android:cropToPadding="true"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <Button

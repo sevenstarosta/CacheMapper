@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.NoActionBar"
         android:name=".cacheMapper">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -37,7 +37,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".LoginActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -46,9 +46,10 @@
         <activity
             android:name=".addcache"
             android:label="@string/title_activity_addcache"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ViewCache"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ViewCache"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
