@@ -70,6 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/addButton"
             android:layout_alignLeft="@+id/addButton"
+            android:textSize="15dp"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:onClick="takePicture"
             android:text="   Take Picture   " />
 
@@ -79,6 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/addButton"
             android:onClick="getImageFromLibrary"
+            android:textSize="15dp"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_alignRight="@+id/addButton"
             android:text="  Image Library  " />
 
@@ -88,6 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textSize="15dp"
             android:onClick="takePicture"
             android:text="Upload Cache at Current Location" />
     </RelativeLayout>

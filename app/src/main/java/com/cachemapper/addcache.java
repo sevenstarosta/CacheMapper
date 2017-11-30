@@ -268,14 +268,18 @@ public class addcache extends AppCompatActivity {
             alertDialog.show();
             return;
         }
+
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String description= descEditText.getText().toString();
         double latitude = currentLat.doubleValue();
         double longitude = currentLon.doubleValue();
         String username = settings.getString("currentUser",null);
-        cacheLocation cache = new cacheLocation(username,name,description,latitude,longitude);
-        //currently overwrites...
+        cacheLocation cache = new cacheLocation(username,name,description,latitude,longitude,1);
+
+        //writing!
         mDatabase.child(name).setValue(cache);
+        //also setting this cache to be have been visited by default
+        mDatabase.child("users/"+username).child(name).setValue(true);
 
         //now upload image if there is one!
         imageView.setDrawingCacheEnabled(true);

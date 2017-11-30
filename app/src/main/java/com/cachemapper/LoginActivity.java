@@ -117,7 +117,12 @@ public class LoginActivity extends AppCompatActivity{
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -128,8 +133,9 @@ public class LoginActivity extends AppCompatActivity{
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+        }
+        else if (!isEmailValid(email)) {
+            mEmailView.setError("Your username is too short!");
             focusView = mEmailView;
             cancel = true;
         }
@@ -177,13 +183,14 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@") && email.contains(".");
+        return email.length() > 3 && !email.contains("email:");
     }
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
 
+    //returning from main activity vie logout
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to

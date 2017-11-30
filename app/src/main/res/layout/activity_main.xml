@@ -40,8 +40,8 @@
             android:layout_alignBottom="@+id/map"
             android:text="Add a cache at my current location"
             android:onClick="addCache"
-            android:background="?attr/colorPrimary"
-            android:textColor="#ffffff"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textSize="18dp"
             android:layout_centerHorizontal="true" />
 
 

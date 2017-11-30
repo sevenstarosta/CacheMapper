@@ -16,49 +16,20 @@ public class cacheLocation /*implements Parcelable*/
     public String description;
     public Double latitude;
     public Double longitude;
+    public Long count;
 
     public cacheLocation()
     {
 
     }
-    public cacheLocation(String u,String n,String desc,double lat,double lon)
+    public cacheLocation(String u,String n,String desc,double lat,double lon, long c)
     {
         this.username = u;
         this.name = n;
         this.description = desc;
         this.latitude = lat;
         this.longitude = lon;
+        this.count = c;
     }
-
-    /*public int describeContents()
-    {
-        return 0;
-    }
-
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(username);
-        out.writeString(name);
-        out.writeString(description);
-        out.writeDouble(latitude);
-        out.writeDouble(longitude);
-    }
-
-    public static final Parcelable.Creator<cacheLocation> CREATOR
-            = new Parcelable.Creator<cacheLocation>()
-    {
-        public cacheLocation createFromParcel(Parcel in)
-        {
-            return new cacheLocation(in);
-        }
-
-        public cacheLocation[] newArray(int size)
-        {
-            return new cacheLocation[size];
-        }
-    };
-
-    private MyParcelable(Parcel in) {
-        mData = in.readInt();
-    }*/
 
 }

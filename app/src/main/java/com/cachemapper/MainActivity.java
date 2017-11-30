@@ -68,20 +68,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        /*logoutButton = (Button) findViewById(R.id.logoutbutton);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent retIntent = new Intent(MainActivity.this, LoginActivity.class);
-                setResult(1, retIntent);
-                finish();
-            }
-        });*/
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle("Cache Mapper: the app!");
+        getSupportActionBar().setSubtitle("Tap a cache on the map to view, or the button below to make one");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,49 +190,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        /*FirebaseDatabase.getInstance().getReference().child("caches")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        Log.v("main","inside valueeventlistener1");
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                        {
-                            cacheLocation cache = snapshot.getValue(cacheLocation.class);
-                            LatLng loc = new LatLng(cache.latitude,cache.longitude);
-                            Marker marker = googleMap.addMarker(new MarkerOptions().position(loc).title(cache.name));
-                            markers.put(cache.name,marker);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError)
-                    {
-
-                    }
-                });*/
-
-        /*myListener = FirebaseDatabase.getInstance().getReference().child("caches")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        Log.v("main","inside valueeventlistener2");
-                        //googleMap.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                        {
-                            cacheLocation cache = snapshot.getValue(cacheLocation.class);
-                            LatLng loc = new LatLng(cache.latitude,cache.longitude);
-                            Marker marker = googleMap.addMarker(new MarkerOptions().position(loc).title(cache.name));
-                            markers.put(cache.name,marker);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });*/
-
         myListener = FirebaseDatabase.getInstance().getReference().child("caches")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
@@ -249,7 +197,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         cacheLocation cache = dataSnapshot.getValue(cacheLocation.class);
                         LatLng loc = new LatLng(cache.latitude,cache.longitude);
-                        Marker marker = googleMap.addMarker(new MarkerOptions().position(loc).title(cache.name));
+                        Marker marker = googleMap.addMarker(new MarkerOptions().position(loc).title(cache.name).icon(BitmapDescriptorFactory.fromResource(R.drawable.cache)));
                         markers.put(cache.name,marker);
                     }
 
