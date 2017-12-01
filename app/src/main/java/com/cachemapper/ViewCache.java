@@ -45,7 +45,7 @@ public class ViewCache extends AppCompatActivity {
     private Toolbar toolbar;
     private long currentCount;
     private String cacheName;
-    private String username;
+    private String usernameOther;
 
     private StorageReference storageReference;
     @Override
@@ -88,7 +88,7 @@ public class ViewCache extends AppCompatActivity {
                         countTextView.setText("Number of users who have visited this cache: " + cache.count);
                         currentCount = cache.count;
                         cacheName = cache.name;
-                        username = cache.username;
+                        usernameOther = cache.username;
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError)
@@ -169,7 +169,7 @@ public class ViewCache extends AppCompatActivity {
     public void sendEmail(View view)
     {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        String uriText = "mailto:" + Uri.encode(username + "@gmail.com") +
+        String uriText = "mailto:" + Uri.encode(usernameOther + "@gmail.com") +
                 "?subject=" + Uri.encode(cacheName);
         Uri uri = Uri.parse(uriText);
         intent.setData(uri);
