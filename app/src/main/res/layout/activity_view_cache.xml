@@ -44,6 +44,17 @@
             android:ems="10"
             android:text="username" />
 
+        <Button
+            android:id="@+id/emailButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textSize="18dp"
+            android:onClick="sendEmail"
+            android:text="Email the creator a question" />
+
         <TextView
             android:id="@+id/cacheDescription"
             android:layout_width="match_parent"

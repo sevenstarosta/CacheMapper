@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity{
             cancel = true;
         }
         else if (!isEmailValid(email)) {
-            mEmailView.setError("Your username is too short!");
+            mEmailView.setError("Not a valid email!");
             focusView = mEmailView;
             cancel = true;
         }
@@ -145,7 +145,10 @@ public class LoginActivity extends AppCompatActivity{
             // form field with an error.
             focusView.requestFocus();
             processingPassword=false;
-        } else {
+        } else
+            {
+                //valid email so can cut of gmail part
+            String username = email.substring(0,email.indexOf("@"));
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
             for (String credential : settings.getAll().keySet()) {
@@ -155,7 +158,7 @@ public class LoginActivity extends AppCompatActivity{
                     if(settings.getString(credential, "none").equals(password))
                     {
                         //go to next activity
-                        editor.putString("currentUser", email);
+                        editor.putString("currentUser", username);
                         editor.commit();
                         processingPassword=false;
                         Intent intent = new Intent(this, MainActivity.class);
@@ -173,7 +176,7 @@ public class LoginActivity extends AppCompatActivity{
 
             // If user doesn't exist, register it now into SharedPreferences
             editor.putString("email:" + email, password);
-            editor.putString("currentUser", email);
+            editor.putString("currentUser", username);
             editor.commit();
             processingPassword=false;
             Intent intent = new Intent(this, MainActivity.class);
@@ -183,7 +186,7 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private boolean isEmailValid(String email) {
-        return email.length() > 3 && !email.contains("email:");
+        return email.length() > 3 && !email.contains("email:")  && email.contains("@gmail.com");
     }
 
     private boolean isPasswordValid(String password) {

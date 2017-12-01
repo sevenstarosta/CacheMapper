@@ -278,8 +278,7 @@ public class addcache extends AppCompatActivity {
 
         //writing!
         mDatabase.child(name).setValue(cache);
-        //also setting this cache to be have been visited by default
-        mDatabase.child("users/"+username).child(name).setValue(true);
+        FirebaseDatabase.getInstance().getReference().child("users/"+username).child(name).setValue(true);
 
         //now upload image if there is one!
         imageView.setDrawingCacheEnabled(true);

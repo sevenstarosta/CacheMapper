@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class ViewCache extends AppCompatActivity {
     private CheckBox checkBox;
     private Toolbar toolbar;
     private long currentCount;
+    private String cacheName;
+    private String username;
 
     private StorageReference storageReference;
     @Override
@@ -84,6 +87,8 @@ public class ViewCache extends AppCompatActivity {
                         descriptionTextView.setText("Cache Description: " + cache.description);
                         countTextView.setText("Number of users who have visited this cache: " + cache.count);
                         currentCount = cache.count;
+                        cacheName = cache.name;
+                        username = cache.username;
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError)
@@ -160,4 +165,15 @@ public class ViewCache extends AppCompatActivity {
             }
         });
     }
+
+    public void sendEmail(View view)
+    {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        String uriText = "mailto:" + Uri.encode(username + "@gmail.com") +
+                "?subject=" + Uri.encode(cacheName);
+        Uri uri = Uri.parse(uriText);
+        intent.setData(uri);
+        startActivity(Intent.createChooser(intent, "Send Email"));
+    }
+
 }
